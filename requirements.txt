@@ -1,0 +1,4 @@
+# core bot: standard library only (Python 3.11)
+# optional, for the parameter search scripts (py/reefbot/search_cmaes.py, search_worker.py):
+numpy
+cma

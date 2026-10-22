@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+run/
+runs/
+managed/
+harness/bin/
+harness/MoSimRL/obj/
+tools/Injector/bin/
+tools/Injector/obj/
+.DS_Store
+backups/
