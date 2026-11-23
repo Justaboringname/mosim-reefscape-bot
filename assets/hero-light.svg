@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="t">
+<title id="t">mosim-reefscape-bot: a scripted bot that plays REEFSCAPE (FRC 2025) in MoSimulator as 1323 Madtown, with no RL and no demos. Mean score by version rises from 168.8 (v35) to 194.1 (v58, the default), below a dashed line at 200.</title>
+<style>
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.tx { fill: #1f1e1c; }
+.mu { fill: #6f6d66; }
+.clay { fill: #b3532f; }
+.sage { fill: #5f7347; }
+.eyebrow { font-size: 22px; letter-spacing: 4px; }
+.title { font-weight: 700; letter-spacing: -1.5px; }
+.tag { font-size: 28px; }
+.node { font-size: 24px; font-weight: 600; }
+.sub { font-size: 22px; }
+.cap { font-size: 22px; }
+.small { font-size: 20px; }
+.num { font-variant-numeric: tabular-nums; }
+.val { font-size: 24px; font-weight: 600; }
+.tick { font-size: 20px; }
+</style>
+<rect x="0.5" y="0.5" width="1279" height="419" rx="20" fill="#faf9f5" stroke="#e6e3d9" stroke-width="1"/>
+<text class="mono eyebrow mu" x="72" y="104">SCRIPTED GAME BOT</text>
+<text class="sans title tx" x="68" y="190" style="font-size:56px">mosim-reefscape-bot</text>
+<text class="sans tag mu" x="72" y="250">Plays REEFSCAPE (FRC 2025)</text>
+<text class="sans tag mu" x="72" y="290">as 1323 Madtown. No RL, no demos.</text>
+<text class="sans tag mu" x="72" y="330">Mean ≈ 194–195, best match 205.</text>
+<text class="mono tick mu" x="660" y="86">batch means, points</text>
+<g stroke="#ebe8df" stroke-width="1.5" fill="none">
+<line x1="724" y1="292.0" x2="1144" y2="292.0"/>
+<line x1="724" y1="240.0" x2="1144" y2="240.0"/>
+<line x1="724" y1="188.0" x2="1144" y2="188.0"/>
+</g>
+<text class="mono tick num mu" x="708" y="299.0" text-anchor="end">170</text>
+<text class="mono tick num mu" x="708" y="247.0" text-anchor="end">180</text>
+<text class="mono tick num mu" x="708" y="195.0" text-anchor="end">190</text>
+<line x1="724" y1="136.0" x2="1216" y2="136.0" stroke="#5f7347" stroke-width="2" stroke-dasharray="7 6"/>
+<text class="mono tick num sage" x="708" y="143.0" text-anchor="end">200</text>
+<line x1="724" y1="324" x2="1144" y2="324" stroke="#c4c0b4" stroke-width="1.5"/>
+<path d="M748.0 298.2 L796.0 242.6 L844.0 198.9 L892.0 194.8 L940.0 192.7 L988.0 168.8 L1036.0 166.2 L1084.0 161.0 L1132.0 166.7" fill="none" stroke="#b3532f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="748.0" cy="298.2" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="796.0" cy="242.6" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="844.0" cy="198.9" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="892.0" cy="194.8" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="940.0" cy="192.7" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="988.0" cy="168.8" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="1036.0" cy="166.2" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="1084.0" cy="161.0" r="5.5" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<circle cx="1132.0" cy="166.7" r="8" fill="#b3532f" stroke="#faf9f5" stroke-width="3"/>
+<text class="sans val num tx" x="764.0" y="308.2">168.8</text>
+<text class="sans val num tx" x="1150.0" y="175.7">194.1</text>
+<text class="mono tick mu" x="748.0" y="356" text-anchor="middle">v35</text>
+<text class="mono tick mu" x="1132.0" y="356" text-anchor="middle">v58</text>
+</svg>

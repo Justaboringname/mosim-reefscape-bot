@@ -1,6 +1,22 @@
-# MoSim REEFSCAPE bot（1323 Madtown）
+<div align="center">
 
-[English](README.md)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg">
+  <img src="assets/hero-light.svg" width="100%" alt="mosim-reefscape-bot，脚本 bot：驾驶 1323 Madtown 打 REEFSCAPE（FRC 2025），没用强化学习也没用录像示范；均分约 194–195，单局最高 205。图为游戏内批次均分，从 v35 的 168.8 升到 v58 的 194.1，虚线是 200。">
+</picture>
+
+<br>
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-788c5d?style=flat-square)](LICENSE)
+![Python 3.11](https://img.shields.io/badge/python-3.11-788c5d?style=flat-square)
+![Platform: macOS](https://img.shields.io/badge/platform-macOS-788c5d?style=flat-square)
+![MoSim REEFSCAPE](https://img.shields.io/badge/MoSim-REEFSCAPE-d97757?style=flat-square)
+
+[English](README.md) · **简体中文**
+
+**MoSim REEFSCAPE bot（1323 Madtown）**
+
+</div>
 
 在 [MoSimulator](https://store.steampowered.com/app/4398690/) 里自动打完一整局 **REEFSCAPE（FRC 2025）** 单车比赛的脚本 bot，驾驶游戏内置的 **1323 Madtown**。没有用强化学习，也没有用录像示范：每个技能都是从游戏机制推出来的，再用游戏内的 A/B 批次调参。分数 = 蓝方 − 红方，场上没有对手。
 
@@ -14,19 +30,19 @@
 | 典型「满分局」 | auto 5 个 L4 + reef 放满 36 个 coral + 6 个 reef algae 进 net + deep climb = 193，再加 1–3 个地上 algae 或 trough coral |
 | 批量速度 | 4 个实例 × 20 局约 35 分钟 |
 
-分数进展（游戏内批次均值，括号里是局数）：
+分数进展（游戏内批次均值，N 是局数）：
 
-| 版本 | 改动 | 均分 |
-|---|---|---|
-| v35 | station 接 coral，用游戏自带 AutoAlign 放置 | 168.8 (10) |
-| v41 | teleop 循环参数搜索（CMA-ES） | 179.5 (40) |
-| v44–v46 | 自己的放置控制器（「到位即对准、到位即放」）、ground intake、net 修复 | 187.9 (30) |
-| v48 | auto 第 2 个 coral 用 ground intake，终局捡地上 algae | 188.7 (30) |
-| v49 | auto 预装 coral 正面放远侧第 4 面（teleop 里最费时的位置） | 189.1 (20) |
-| v50–v52 | reef 六角避撞、去 net 路上提前转向、终局按时钟决策、coral handoff 卡死脱困 | 193.7 (20) |
-| v56 | 送件段朝向控制 + 放置速度门槛 0.25 m/s：满 reef 提前约 1.5–2 s | 194.2 (80) |
-| v57 | 更积极地捡地上 algae，捡球限时保住 climb | 195.2 (40) |
-| v58 | 终局打 L1 trough（无可测增益：194.1 vs 不打 194.3） | 194.1 (40) |
+| 版本 | 改动 | 均分 | N |
+|---|---|--:|--:|
+| v35 | station 接 coral，用游戏自带 AutoAlign 放置 | 168.8 | 10 |
+| v41 | teleop 循环参数搜索（CMA-ES） | 179.5 | 40 |
+| v44–v46 | 自己的放置控制器（「到位即对准、到位即放」）、ground intake、net 修复 | 187.9 | 30 |
+| v48 | auto 第 2 个 coral 用 ground intake，终局捡地上 algae | 188.7 | 30 |
+| v49 | auto 预装 coral 正面放远侧第 4 面（teleop 里最费时的位置） | 189.1 | 20 |
+| v50–v52 | reef 六角避撞、去 net 路上提前转向、终局按时钟决策、coral handoff 卡死脱困 | 193.7 | 20 |
+| v56 | 送件段朝向控制 + 放置速度门槛 0.25 m/s：满 reef 提前约 1.5–2 s | 194.2 | 80 |
+| v57 | 更积极地捡地上 algae，捡球限时保住 climb | 195.2 | 40 |
+| v58 | 终局打 L1 trough（无可测增益：194.1 vs 不打 194.3） | 194.1 | 40 |
 
 N=20 时均分的标准误约 1 分，单批差距小于 2 分基本是噪声。小的提速改动改用每个循环分段耗时（`py/reefbot/cycle_report.py`）来判断。
 
@@ -35,15 +51,17 @@ N=20 时均分的标准误约 1 分，单批差距小于 2 分基本是噪声。
 **Auto（15 s）：** 预装 coral 正面放远侧的 reef 第 4 面（开局就朝着 reef），第 2 个用 ground intake 捡，3 个立着的 staged coral 用 end effector 竖着吸，时间够再用 ground intake 捡第 6 个。通常 auto 放 5 个 L4。
 
 **Teleop coral 循环（约 2.9 s）：**
-- *取件：* ground intake 捡代价最小的地上 coral（station 会不断往地上掉 coral）。先沿 coral 轴线在 0.75 m 外对准，再以约 1.2 m/s 碰上去（`GROUND_V_TOUCH`；`GROUND_FAST=0` 是更慢的「刚好停在 coral 前再推 5 cm」）。场内对不准、或接近路线上有别的 coral 的就跳过；车底压了 coral 先甩掉。
-- *送件：* 绕 reef 的 A* 路径（reef 视为一个圆加六个角上的小圆，所以能贴着面走又不蹭角），边走边转好朝向，coral 一进 end effector 就按 level，最后前馈刹停在 branch 位姿。距离 <2.5 cm、角度 <1.5°、速度 <0.25 m/s 且电梯稳定时放手。L2/L3 背放，远侧面的 L4 正放。
-- *顺序：* 同层级就近贪心（先 L4），某面的 L3 需要时顺手摘掉该面的 algae。
+- **取件：** ground intake 捡代价最小的地上 coral（station 会不断往地上掉 coral）。先沿 coral 轴线在 0.75 m 外对准，再以约 1.2 m/s 碰上去（`GROUND_V_TOUCH`；`GROUND_FAST=0` 是更慢的「刚好停在 coral 前再推 5 cm」）。场内对不准、或接近路线上有别的 coral 的就跳过；车底压了 coral 先甩掉。
+- **送件：** 绕 reef 的 A* 路径（reef 视为一个圆加六个角上的小圆，所以能贴着面走又不蹭角），边走边转好朝向，coral 一进 end effector 就按 level，最后前馈刹停在 branch 位姿。距离 <2.5 cm、角度 <1.5°、速度 <0.25 m/s 且电梯稳定时放手。L2/L3 背放，远侧面的 L4 正放。
+- **顺序：** 同层级就近贪心（先 L4），某面的 L3 需要时顺手摘掉该面的 algae。
 
 **Algae：** 只从正面摘（背面摘的 algae 卡在爪子深处，会往后飞），去 net 路上提前抬臂，最后一米斜着进（直着进容易卡在 rim 上），进 cage 区前先对齐 z，球坐低、车停稳才出手。
 
 **终局：** reef 放满后，时间够就捡地上 algae 送 net，不够就打 L1 trough。捡地上 algae 和送 net 都受 climb 预留时间约束；trough 只在时间估计够的时候才开始。Deep climb 带滑脱检测和重试。
 
-大部分打法来自用户自己的操作经验：*到位时朝向和电梯都已就绪，不花额外时间对准；贴着墙和 reef 走；边走边转；auto 第 2 个从地上捡，staged coral 用 end effector 竖着吸。*
+大部分打法来自用户自己的操作经验：
+
+> 到位时朝向和电梯都已就绪，不花额外时间对准；贴着墙和 reef 走；边走边转；auto 第 2 个从地上捡，staged coral 用 end effector 竖着吸。
 
 ## 没用的尝试
 
@@ -92,5 +110,5 @@ python -m reefbot.demo 47601 2560x1440               # 实时跑一局可见的�
 ## 声明
 
 - MoSimulator 归其开发者所有。本项目与他们无关，不包含任何游戏代码或美术资源。
-- 个人研究项目，MIT 许可证。
+- 个人研究项目，[MIT 许可证](LICENSE)。
 - 代码和文档由 Claude（Anthropic）在用户指导下编写。

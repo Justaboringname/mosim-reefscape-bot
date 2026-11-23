@@ -1,6 +1,22 @@
-# MoSim REEFSCAPE bot (team 1323 Madtown)
+<div align="center">
 
-[中文](README.zh-CN.md)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg">
+  <img src="assets/hero-light.svg" width="100%" alt="mosim-reefscape-bot, a scripted game bot: it plays REEFSCAPE (FRC 2025) as 1323 Madtown with no RL and no demos; mean about 194–195, best match 205. Chart of in-game batch means, rising from 168.8 at v35 to 194.1 at v58, below a dashed line at 200.">
+</picture>
+
+<br>
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-788c5d?style=flat-square)](LICENSE)
+![Python 3.11](https://img.shields.io/badge/python-3.11-788c5d?style=flat-square)
+![Platform: macOS](https://img.shields.io/badge/platform-macOS-788c5d?style=flat-square)
+![MoSim REEFSCAPE](https://img.shields.io/badge/MoSim-REEFSCAPE-d97757?style=flat-square)
+
+**English** · [简体中文](README.zh-CN.md)
+
+**MoSim REEFSCAPE bot (team 1323 Madtown)**
+
+</div>
 
 A scripted bot that plays a full single-robot match of **REEFSCAPE (FRC 2025)** in [MoSimulator](https://store.steampowered.com/app/4398690/), driving the built-in **1323 Madtown** robot. No reinforcement learning and no recorded demos: every skill was designed from the game's mechanics, then tuned with in-game A/B batches. The score is blue minus red with no opponent on the field.
 
@@ -14,19 +30,19 @@ A scripted bot that plays a full single-robot match of **REEFSCAPE (FRC 2025)** 
 | Typical "full" match | 5 auto L4 + full reef (36 coral) + 6 reef algae in the net + deep climb = 193, plus 1–3 floor algae or trough coral |
 | Matches per batch | 4 instances × 20 matches in about 35 minutes |
 
-Score progression (means of in-game batches; N in brackets):
+Score progression (means of in-game batches; N is the number of matches):
 
-| Version | Change | Mean |
-|---|---|---|
-| v35 | station intake, game AutoAlign placement | 168.8 (10) |
-| v41 | parameter search (CMA-ES) on the teleop cycle | 179.5 (40) |
-| v44–v46 | own placement controller ("arrive aligned, release on arrival"), ground intake, net fixes | 187.9 (30) |
-| v48 | ground intake 2nd coral in auto, end-game floor algae | 188.7 (30) |
-| v49 | auto preload on far face 4 from the front (the costliest slot to fill in teleop) | 189.1 (20) |
-| v50–v52 | reef-corner avoidance, earlier turn on net trips, clock-aware end game, coral-handoff deadlock escape | 193.7 (20) |
-| v56 | deliver-leg heading law and a 0.25 m/s release gate: reef full ~1.5–2 s earlier | 194.2 (80) |
-| v57 | optimistic floor-algae gate, pick time capped to protect the climb | 195.2 (40) |
-| v58 | end-game L1 trough coral (no measurable gain: 194.1 vs 194.3 off) | 194.1 (40) |
+| Version | Change | Mean | N |
+|---|---|--:|--:|
+| v35 | station intake, game AutoAlign placement | 168.8 | 10 |
+| v41 | parameter search (CMA-ES) on the teleop cycle | 179.5 | 40 |
+| v44–v46 | own placement controller ("arrive aligned, release on arrival"), ground intake, net fixes | 187.9 | 30 |
+| v48 | ground intake 2nd coral in auto, end-game floor algae | 188.7 | 30 |
+| v49 | auto preload on far face 4 from the front (the costliest slot to fill in teleop) | 189.1 | 20 |
+| v50–v52 | reef-corner avoidance, earlier turn on net trips, clock-aware end game, coral-handoff deadlock escape | 193.7 | 20 |
+| v56 | deliver-leg heading law and a 0.25 m/s release gate: reef full ~1.5–2 s earlier | 194.2 | 80 |
+| v57 | optimistic floor-algae gate, pick time capped to protect the climb | 195.2 | 40 |
+| v58 | end-game L1 trough coral (no measurable gain: 194.1 vs 194.3 off) | 194.1 | 40 |
 
 Score SE at N = 20 is about 1 point, so single-batch differences under ~2 points are noise. Per-cycle segment times (`py/reefbot/cycle_report.py`) were used to judge small speed changes instead.
 
@@ -35,15 +51,17 @@ Score SE at N = 20 is about 1 point, so single-batch differences under ~2 points
 **Auto (15 s):** preload on far reef face 4 from the front (the robot starts facing the reef), then the 2nd coral by ground intake, the three staged coral picked standing with the end effector, and a 6th by ground intake if time allows. Usually 5 L4 in auto.
 
 **Teleop coral cycle (~2.9 s):**
-- *Fetch:* ground intake of the cheapest lying coral (the stations keep ground-dropping coral). After a 0.75 m line-up along the coral's axis the intake meets it at about 1.2 m/s (`GROUND_V_TOUCH`; `GROUND_FAST=0` gives the slower stop-at-touch law with a 5 cm push). A coral is skipped when the robot cannot line up on it inside the field or another coral lies in its approach corridor; a coral under the chassis is shed before the next pickup.
-- *Deliver:* an A* path around the reef (the reef is a disc plus six corner discs, so the robot hugs the faces without clipping the corners), heading converged during the drive, the level pressed as soon as the coral is in the end effector, and a feedforward stop at the branch pose. Release when within 2.5 cm, 1.5° and 0.25 m/s with the elevator settled. Back placement for L2/L3, front L4 on the far faces.
-- *Order:* greedy same-tier slot choice (L4 first), each face's algae removed when its L3s are needed.
+- **Fetch:** ground intake of the cheapest lying coral (the stations keep ground-dropping coral). After a 0.75 m line-up along the coral's axis the intake meets it at about 1.2 m/s (`GROUND_V_TOUCH`; `GROUND_FAST=0` gives the slower stop-at-touch law with a 5 cm push). A coral is skipped when the robot cannot line up on it inside the field or another coral lies in its approach corridor; a coral under the chassis is shed before the next pickup.
+- **Deliver:** an A* path around the reef (the reef is a disc plus six corner discs, so the robot hugs the faces without clipping the corners), heading converged during the drive, the level pressed as soon as the coral is in the end effector, and a feedforward stop at the branch pose. Release when within 2.5 cm, 1.5° and 0.25 m/s with the elevator settled. Back placement for L2/L3, front L4 on the far faces.
+- **Order:** greedy same-tier slot choice (L4 first), each face's algae removed when its L3s are needed.
 
 **Algae:** removed from the front only (back-removed algae seat deep in the claw and fly backwards), carried to the net with the arm raised early, a diagonal final metre (straight-in approaches stalled on the rim), z error closed before entering the cage zone, release only when the ball sits low and the robot is still.
 
 **End game:** after the reef is full, floor algae (net) when the trip can fit, else an L1 trough coral. The floor-algae pick and the net attempt are capped at the climb reserve; the trough cycle is only started when its time estimate fits. Deep climb with slip detection and retry.
 
-The user's own technique shaped most of this: *arrive with the heading and elevator already right so no alignment time is spent; drive close along the walls and the reef; turn while driving; in auto, take the 2nd coral from the ground and the staged ones standing with the end effector.*
+The user's own technique shaped most of this:
+
+> Arrive with the heading and elevator already right so no alignment time is spent; drive close along the walls and the reef; turn while driving; in auto, take the 2nd coral from the ground and the staged ones standing with the end effector.
 
 ## What did not help
 
@@ -92,5 +110,5 @@ python -m reefbot.demo 47601 2560x1440               # one visible real-time mat
 ## Disclaimer
 
 - MoSimulator belongs to its developers. This project is not affiliated with them and contains no game code or assets.
-- A personal research project under the MIT license.
+- A personal research project under the [MIT license](LICENSE).
 - The code and documents were written by Claude (Anthropic) under the user's direction.
